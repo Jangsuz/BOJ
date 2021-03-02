@@ -1,0 +1,31 @@
+#Graph 구현 없이, 인접 리스트로 표현!
+
+import sys
+sys.setrecursionlimit(10**8)
+input = sys.stdin.readline
+
+#정점, 간선 입력
+N, M = map(int,input().split())
+ans = 0
+visited = [False]*(N+1)
+#정점의 개수만큼 2차원 리스트로 인접 리스트 표현
+graph = [[] for _ in range(N+1)]
+
+#정점끼리 연결
+for _ in range(M):
+  u, v = map(int, input().split())
+  graph[u].append(v)
+  graph[v].append(u)
+
+def dfs(vt):
+  visited[vt] = True
+  for k in graph[vt]:
+    if not visited[k]:
+      dfs(k)
+
+for i in range(1, N+1):
+  if not visited[i]:
+    dfs(i)
+    ans += 1
+
+print(ans)

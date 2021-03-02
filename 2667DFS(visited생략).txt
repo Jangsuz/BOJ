@@ -1,0 +1,38 @@
+#이미 방문한 지역은 1->0으로 바꿔줌으로써 visited 리스트 생략. 0과 1로만 이루어진 문제에서 가능한 방식임
+
+#좌표설정
+dx = [0, 0, -1, 1]
+dy = [-1, 1, 0, 0]
+
+#입력 및 초기화
+N = int(input())
+graph = []
+cnt=0
+ans = []
+
+for _ in range(N):
+  graph.append(list(map(int, input())))
+
+def dfs(x, y, cnt):
+  #이미 방문한 지역은 0으로 바꿔줌
+  graph[x][y] = 0
+  for k in range(4):
+    nx = x + dx[k]
+    ny = y + dy[k]
+    if nx >= 0 and nx < N and ny >= 0 and ny < N:
+      if(graph[nx][ny] == 1):
+        cnt = dfs(nx, ny, cnt+1) 
+        #dfs 함수가 return cnt하므로 cnt라는 변수에 dfs를 호출해줘서 return 해 줄 변수가 필요함
+  return cnt
+        
+for i in range(N):
+  for j in range(N):
+    if(graph[i][j] == 1):
+      #일단 dfs를 시작했으므로 단지 개수는 1이상
+      ans.append(dfs(i, j, 1))
+
+#단지수 = ans 리스트의 길이
+print(len(ans))
+#ans리스트의 길이만큼 정렬하고 순회
+for i in sorted(ans):
+  print(i)

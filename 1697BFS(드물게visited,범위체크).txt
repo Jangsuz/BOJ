@@ -1,0 +1,35 @@
+from collections import deque
+
+import sys
+input = sys.stdin.readline
+
+#수빈이가 이동할 수 있는 최대값
+MAX = 100001
+N, K = map(int,input().split())
+
+#queue에 중복으로 push하지 않기 위함
+visited = [False]*MAX
+
+def bfs(x, count):
+  ans = 987654321
+  queue = deque()
+  queue.append((x, count))
+  visited[x] = True
+  while queue:
+    a, b = queue.popleft()
+    if a == K:
+      ans = min(ans, b)
+      return ans
+    else:
+      #MAX 범위 체크 필수
+      if a - 1 >= 0 and not visited[a-1]:
+        queue.append((a-1, b+1))
+        visited[a-1] = True
+      if a + 1 < MAX and not visited[a+1]:
+        queue.append((a+1, b+1))
+        visited[a+1] = True
+      if a * 2 < MAX and not visited[a*2]:
+        queue.append((a*2, b+1))
+        visited[a*2] = True
+        
+print(bfs(N, 0))
